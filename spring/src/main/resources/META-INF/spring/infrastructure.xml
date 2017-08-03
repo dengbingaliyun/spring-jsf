@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    JBoss, Home of Professional Open Source
+    Copyright 2014, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. See the copyright.txt in the
+    distribution for a full listing of individual contributors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" 
+	p:persistenceXmlLocation="classpath*:META-INF/persistence.xml"
+	p:persistenceUnitName="primarybasic"
+	p:jpaVendorAdapter-ref="jpaVendor"/>
+ 	
+ 	<bean id="entityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+ 	
+ 	<!-- 使用EclipseLink 作为 JPA 的实现-->
+	<bean id="jpaVendor" class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter" p:showSql="true"/>
+    
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" /> 
+    
+    <bean id="transactionManager"   class="org.springframework.orm.jpa.JpaTransactionManager"> 
+        <property name="entityManagerFactory" ref="entityManagerFactory" /> 
+    </bean> 
+     
+    <tx:annotation-driven transaction-manager="transactionManager" /> 
+    
+    <!-- <tx:jta-transaction-manager/> -->
+    
+   <!--  <bean id="myTxManager" class="org.springframework.transaction.jta.JtaTransactionManager"/> -->
+  <!--如果默认id=transactionManager，那么可以有下面的标签，这样spring会自动寻找相应的jta的jndi并且注入
+  <tx:jta-transaction-manager/>-->
+  <!-- <tx:advice id="txAdvice" transaction-manager="myTxManager">
+    <tx:attributes>
+        <tx:method name="select*" read-only="true" propagation="REQUIRED"/>
+        <tx:method name="find*" read-only="true"  propagation="REQUIRED"/>
+        <tx:method name="save*"  propagation="REQUIRED" isolation="REPEATABLE_READ"/>
+        <tx:method name="update*"  propagation="REQUIRED" isolation="REPEATABLE_READ"/>
+        <tx:method name="add*"  propagation="REQUIRED" isolation="REPEATABLE_READ" />
+        <tx:method name="delete*"  propagation="REQUIRED" isolation="REPEATABLE_READ"/>
+    </tx:attributes>
+  </tx:advice> -->
+
+</beans>
