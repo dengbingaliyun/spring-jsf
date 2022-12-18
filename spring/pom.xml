@@ -40,8 +40,8 @@
         <hibernate.version>3.6.9.Final</hibernate.version>  
         <commons.fileupload.version>1.2.1</commons.fileupload.version>  
         <javassist.version>3.12.1.GA</javassist.version>  
-        <cxf.version>3.0.2</cxf.version>  
-        <spring.version>4.1.4.RELEASE</spring.version>  
+        <cxf.version>3.4.10</cxf.version>  
+        <spring.version>5.2.22.RELEASE</spring.version>  
     </properties>  
   
     <dependencies>
